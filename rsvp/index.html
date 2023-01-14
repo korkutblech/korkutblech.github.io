@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+		<meta name="robots" content="noindex" />
+    <title>RSVP for Anna and Joomy's wedding</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="manifest" href="../site.webmanifest">
+    <link rel="mask-icon" href="../safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <style>
+      @font-face {
+        font-family: Libertine;
+        src: url("../fonts/LinLibertine_R.otf") format("opentype");
+      }
+
+      @font-face {
+        font-family: Libertine;
+        font-weight: bold;
+        src: url("../fonts/LinLibertine_RB.otf") format("opentype");
+      }
+
+      body {
+        font-family: Libertine, serif;
+        letter-spacing: -.02rem;
+        background: #B8D1EE;
+        color: #0D417D;
+        margin: 0;
+        padding: 20px 0 0 0;
+      }
+
+      p {
+        margin: 20px;
+      }
+
+      img {
+        -khtml-user-select: none;
+        -o-user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      
+      /*
+      #main-content { background-color: #eef3f7; background-opacity: 0.3em;}
+      #sidebar-left { background-color: #e3e9ee; background-opacity: 0.3em;}
+      #sidebar-right { background-color: #dbe1e6; background-opacity: 0.3em;}
+      */
+
+      .board {
+        width: 100%;
+        max-width: 50em;
+        margin-top:1em;
+      }
+      #sidebar-left img {
+        width: 100%;
+        max-width: calc(11em + 1vw);
+      }
+      #sidebar-right img {
+        width: 100%;
+        max-width: 14em;
+      }
+      .directive {
+        font-size:calc(1em + 0.6vw);
+      }
+      .inner {
+        margin: 1em;
+        height: 48em;
+        position: relative;
+      }
+      .innerer {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%
+      }
+      .sidebar-right .inner {
+        min-height: 40em;
+      }
+
+      .cards {
+        position: relative;
+        height: 20em;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14em;
+      }
+      .cards img:nth-child(1) {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .cards img:nth-child(2) {
+        position: absolute;
+        top: 1em;
+        left: 1em;
+      }
+      .cards img:nth-child(3) {
+        position: absolute;
+        top: 2em;
+        left: 2em;
+      }
+      
+      /*Base Mobile Layout*/
+      .wrap {
+        width: 90%;
+        margin: 0 auto;
+      }
+      
+      #main-content, #sidebar-left, #sidebar-right {
+        width: 100%;
+        float: left;
+      }
+      
+      /*3 Column Layout*/
+      @media only screen and (min-width: 1024px) {
+        .wrap {
+          width: 1024px;
+          margin: 0 auto;
+        }
+        
+        #main-content {
+          width: 50%;
+          float: left;
+        }
+        
+        #sidebar-left {
+          width: 25%;
+          float: left;
+        }
+        
+        #sidebar-right {
+          width: 25%;
+          float: left;
+        }
+      }
+      
+      /*Wide Layout*/
+      @media only screen and (min-width: 1200px) {
+        .wrap {
+          width: 1200px;
+          margin: 0 auto;
+        }
+      }
+      
+      /*Move Sidebar Position*/
+      @media only screen and (min-width: 1024px) {
+        .wrap, #main-content, #sidebar-left, #sidebar-right {
+          position: relative;
+        }
+        
+        #main-content, #sidebar-left, #sidebar-right {
+          top: 0;
+        }
+        
+        #sidebar-right {
+          right: 0;
+        }
+        
+        #sidebar-left {
+          left: -50%; /*Width of #main-content*/
+        }
+        
+        #main-content {
+          left: 25%; /*Width of #left-sidebar*/
+        }
+
+        .inner { height: 48em; }
+
+      }
+      
+      /*Optional 2 Column Layout*/
+      @media only screen and (min-width: 768px) and (max-width: 1024px) {
+        #sidebar-right {
+          width: 50%;
+        }
+        #sidebar-left {
+          width: 50%;
+        }
+        #main-content {
+          position: relative;
+          top: 0;
+          left: 0;
+        }
+        .board {
+          max-width: 30em;
+        }
+        .inner {
+          height: 40em;
+        }
+      }
+
+      @media only screen and (max-width: 768px) {
+        #board {
+          max-width: 40em;
+        }
+        #main-content .inner {
+          height: calc(25em + 30vw);
+        }
+        #sidebar-left .inner {
+          height:  calc(5em + 15vw);
+          padding: 5em;
+        }
+        #sidebar-right .inner {
+          height:  calc(40em);
+        }
+      }
+
+
+      .res-card, .dev-card {
+        margin-top: 1em;
+        float: left;
+        border-radius: 10px;
+        width: 100%;
+        /* aspect-ratio: 2/3; */
+        font-size: 1.2em;
+        box-shadow: 0.3px 0.3px #000000;
+      }
+
+
+      .res-card h1, .dev-card h1 {
+        font-variant: small-caps;
+        font-size: 1.3em;
+        text-align: center;
+        font-weight: 100;
+      } 
+      .res-card h2, .dev-card h2 {
+        font-variant: small-caps;
+        font-size: 1.1em;
+        text-align: center;
+        font-weight: 100;
+      } 
+
+      .res-card {
+        border: 3px solid #0D417D;
+        background: #FFF4DB;
+      }
+
+      .dev-card {
+        color: #8B572A;
+        border: 3px solid #8B572A;
+        background: #FBF3EB;
+      }
+
+			.dev-card ul {
+				list-style: square;
+			}
+
+			.dev-card a {
+				color: #D97A00;
+				border-bottom: 1px solid #32231F;
+				text-decoration: none;
+			}
+
+			.dev-card a:hover {
+				border-bottom: 2px solid #D97A00;
+			}
+
+      .highlighted {
+        filter: drop-shadow(10px 10px 10px #da532c) sepia(40%);
+      }
+
+      .info {
+        /* 
+        min-height: 50em; 
+        */
+      }
+
+			.seven {
+				font-family: Helvetica, sans-serif;
+				width: 20px;
+				height: 20px;
+				border-radius: 20px;
+				color: white;
+				text-align: center;
+				float: none;
+				border: 1px solid transparent;
+				background: rgb(197,65,236);
+				display:inline-block;
+			}
+
+			.mapouter {
+				border: 1px solid #8B572A;
+			}
+
+      .gallery-row {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 4px;
+        justify-content: center;
+      }
+
+      /* Create four equal columns that sits next to each other */
+      .gallery-column {
+        flex: 30%;
+        max-width: 30%;
+        padding: 0 4px;
+      }
+
+      .gallery-column div {
+        margin-top: 10px;
+        border: 1px solid #8B572A;
+        border-radius: 8px;
+      }
+      .gallery-column div small {
+        display: inline-block;
+        margin: 6px;
+      }
+      .gallery-column div img {
+        border-radius: 8px 8px 0 0;
+        vertical-align: middle;
+        width: 100%;
+      }
+
+      /* Responsive layout - makes a two column-layout instead of four columns 
+      @media screen and (max-width: 800px) {
+        .gallery-column {
+          flex: 50%;
+          max-width: 50%;
+        }
+      }
+      */
+
+      /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+      @media screen and (max-width: 600px) {
+        .gallery-column {
+          flex: 100%;
+          max-width: 100%;
+        }
+      }
+
+      .rsvp-name, textarea {
+        display: block;
+        width: 95%;
+        height: 2em;
+        padding: 8px;
+        border-radius: 10px;
+        font-size: 1.1em;
+        line-height: 1.42857143;
+        background-color: transparent;
+        border-color: #8B572A;
+        color: #8B572A;
+        font-family: Libertine, serif;
+      }
+      #rsvp-name button {
+        display: block;
+        height: 2em;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 10px;
+        font-size: 1.1em;
+        line-height: 1.42857143;
+        background-color: #8B572A;
+        color: #FBF3EB;
+        font-family: Libertine, serif;
+        border: 2px solid #8B572A;
+      }
+      #rsvp-name button:hover {
+        background-color: #DFD3C9;
+        color: #8B572A;
+      }
+      .rsvp-name::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #8B572A;
+        font-style: italic;
+      }
+      .cantfind {
+        color: #B02623;
+        font-weight: bold;
+      }
+      .doyoumean {
+        color: #174099;
+        font-weight: bold;
+      }
+      .saved {
+        color: #0F9914;
+        font-weight: bold;
+      }
+      .saved a {
+        color: #0F9914 !important;
+      }
+      .full-form {
+      }
+      .hide {
+        display: none;
+      }
+
+
+
+      .radio-toolbar {
+        margin: 10px;
+      }
+
+      .radio-toolbar input[type="radio"].attendance {
+        opacity: 0;
+        position: fixed;
+        width: 0;
+      }
+
+      .radio-toolbar label.attendance {
+          display: inline-block;
+          background-color: transparent;
+          padding: 10px 20px;
+          font-size: 16px;
+          border: 2px solid #8B572A;
+          border-radius: 4px;
+      }
+
+      .radio-toolbar label.attendance:hover {
+        background-color: #DFD3C9;
+      }
+
+      .radio-toolbar input[type="radio"].attendance:focus + label {
+          border: 2px dashed #8B572A;
+      }
+
+      .radio-toolbar input[type="radio"].attendance:checked + label {
+          background-color: #8B572A;
+          color: #FBF3EB;
+      }
+
+      /* Customize the label (the foodcontainer) */
+      .foodcontainer {
+        display: block;
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 12px;
+        font-size: 1em;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      /* Hide the browser's default radio button */
+      .foodcontainer input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+
+      /* Create a custom radio button */
+      .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 1.1em;
+        width: 1.1em;
+        background-color: transparent;
+        border-radius: 50%;
+        border: 2px solid #8B572A;
+      }
+
+      /* On mouse-over, add a grey background color */
+      .foodcontainer:hover input ~ .checkmark {
+        background-color: #DFD3C9;
+      }
+
+      /* When the radio button is checked, add a blue background */
+      .foodcontainer input:checked ~ .checkmark {
+        background-color: #8B572A;
+      }
+
+      /* Create the indicator (the dot/circle - hidden when not checked) */
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+
+      /* Show the indicator (dot/circle) when checked */
+      .foodcontainer input:checked ~ .checkmark:after {
+        display: block;
+      }
+
+      /* Style the indicator (dot/circle) */
+      .foodcontainer .checkmark:after {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: white;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      } 
+      #dietNYC, #dietNYC2, #dietTR, #dietTR2 {
+        display: none;
+      }
+      #willNYC:checked~#dietNYC {
+        display: block;
+      }
+      #willNYC2:checked~#dietNYC2 {
+        display: block;
+      }
+      #willTR:checked~#dietTR {
+        display: block;
+      }
+      #willTR2:checked~#dietTR2 {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+        <div class="dev-card info">
+          <h1>RSVP</h1>
+          <p>Please enter your first and last name to unlock your RSVP form. <br>If you're responding for yourself and a plus one (or your family), just enter one name and you'll be able to RSVP for your entire group.</p>
+          <form id="rsvp-name">
+            <p><input class="rsvp-name" type="text" id="rsvp-name-lookup" placeholder="Ex. Noam Chomsky (not The Chomsky Family or Dr. &amp; Mr. Chomsky)" value=""><br>
+          <button id="rsvp-continue">Continue</button>
+</p>
+          <p class="cantfind hide">Hmm, we can't find your name. Make sure you enter your name exactly as it appears on your invitation. Please reach out to us to see exactly how we entered your details.</p>
+          <p class="doyoumean hide">Hmm, we can't find your name. Make sure you enter your name exactly as it appears on your invitation. Please reach out to us to see exactly how we entered your details.</p>
+          <p class="full-form hide"></p>
+          <p class="saved hide">Your RSVP response is saved! If you want to change anything, you can use this form again but we would appreciate <a href="mailto:korkutblech@gmail.com">sending us an e-mail</a>.<br><br><a href="../">Click here to go back to the main page.</a></p>
+          </form>
+        </div>
+    </div>
+    <script>
+      var name = ''
+
+      const serializeForm = () => {
+        var obj = {}
+        var formData = new FormData(document.querySelector('form'))
+        for (var key of formData.keys()) {
+          obj[key] = formData.get(key)
+        }
+        return obj
+      }
+
+      const setFormElements = obj => {
+        for (var key in obj) {
+          let el = document.querySelector(`[name="${key}"]`)
+          if (!el) { continue }
+
+          if (el.type === "radio") {
+            let els = document.querySelectorAll(`[name="${key}"][value="${obj[key]}"]`)
+            if (els.length === 1) {
+              els[0].checked = true
+            } else {
+              // document.querySelectorAll(`[name="${key}"]`).forEach(e => {e.checked = false})
+            }
+          } else {
+            el.value = obj[key]
+          }
+        }
+      }
+
+      const handle = obj => {
+        if (obj.status == "found") {
+          let p = document.querySelector('.full-form')
+          const full = obj.match[1]
+          name = full['Name'] // update global name
+          const plusone = full['Plus 1 name'] == "Y" ? "their plus-one" :
+                          full['Plus 1 name'] ? full['Plus 1 name'] : ''
+          const couple = full['Name'] + (plusone ? ' and ' + plusone : '')
+          let form = ``
+          form += 
+            `We look forward to seeing ${couple} at our wedding(s)!<br><br>`
+
+          if(full.wp || full.wp2) {
+            var wpNames = []
+            if (full.wp) wpNames.push(full['Name'])
+            if (full.wp2) wpNames.push(full['Plus 1 name'])
+            form += 
+              `<b>We would also like to remind you that ${wpNames.join(" and ")} ${wpNames.length === 1 ? "is" : "are"} in the wedding party!</b><br><br>`
+          }
+
+          form += 
+            `Please fill out the following form to let us know if you are attending:
+            <br>`
+          
+          form += `<ul>`
+
+          if(full.rehearsal || full.rehearsal2) {
+            form += `<li>Rehearsal meal at <a href="https://www.pera-soho.com/">Pera Soho</a>, NYC. September 3rd, 2022. 4pm-6:30pm<br>`
+            form += `<ul>`
+            form += `<li>`
+            if(full.rehearsal) {
+              form +=
+                `${name}: <div class="radio-toolbar">
+                    <input type="radio" id="willR" name="attendR" value="Y" class="attendance">
+                    <label for="willR" class="attendance">Will attend</label>
+
+                    <input type="radio" id="willnotR" name="attendR" value="N" class="attendance">
+                    <label for="willnotR" class="attendance">Will not attend</label></div>`
+            }
+            if(full.rehearsal2) {
+              form +=
+                `${plusone}: <div class="radio-toolbar">
+                    <input type="radio" id="willR2" name="attendR2" value="Y" class="attendance">
+                    <label for="willR2" class="attendance">Will attend</label>
+
+                    <input type="radio" id="willnotR2" name="attendR2" value="N" class="attendance">
+                    <label for="willnotR2" class="attendance">Will not attend</label></div>`
+            }
+            form += `</li>`
+            form += `</ul></li>`
+          }
+
+          form += `<li>NYC wedding, September 4th, 2022.`
+          form += `<ul>`
+          form += `<li>`
+          form +=
+            `${name}: <div class="radio-toolbar">
+                 <input type="radio" id="willNYC" name="attendNYC" value="Y" class="attendance">
+                 <label for="willNYC" class="attendance">Will attend</label>
+
+                 <input type="radio" id="willnotNYC" name="attendNYC" value="N" class="attendance">
+                 <label for="willnotNYC" class="attendance">Will not attend</label>`
+          form +=
+             `<div id="dietNYC">Dietary restriction:
+              <label class="foodcontainer">None
+                <input type="radio" checked="checked" name="foodNYC" value="None">
+                <span class="checkmark"></span>
+              </label>
+              <label class="foodcontainer">Kosher
+                <input type="radio" name="foodNYC" value="Kosher">
+                <span class="checkmark"></span>
+              </label>
+              <label class="foodcontainer">Vegetarian
+                <input type="radio" name="foodNYC" value="Vegetarian">
+                <span class="checkmark"></span>
+              </label>
+              <label class="foodcontainer">Vegan
+                <input type="radio" name="foodNYC" value="Vegan">
+                <span class="checkmark"></span>
+              </label></div></div>`
+          form += `</li>`
+          if(plusone) {
+            form += `<br><li>`
+            form +=
+              `${plusone}: <div class="radio-toolbar">
+                  <input type="radio" id="willNYC2" name="attendNYC2" value="Y" class="attendance">
+                  <label for="willNYC2" class="attendance">Will attend</label>
+
+                  <input type="radio" id="willnotNYC2" name="attendNYC2" value="N" class="attendance">
+                  <label for="willnotNYC2" class="attendance">Will not attend</label>`
+
+            form +=
+             `<div id="dietNYC2">Dietary restriction:
+                <label class="foodcontainer">None
+                  <input type="radio" checked="checked" name="foodNYC2" value="None">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="foodcontainer">Kosher
+                  <input type="radio" name="foodNYC2" value="Kosher">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="foodcontainer">Vegetarian
+                  <input type="radio" name="foodNYC2" value="Vegetarian">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="foodcontainer">Vegan
+                  <input type="radio" name="foodNYC2" value="Vegan">
+                  <span class="checkmark"></span>
+              </label></div></div>`
+            form += `</li>`
+          }
+          form += `</ul>`
+
+          form += `<br><li>Bursa, Turkey wedding, September 10th, 2022.`
+          form += `<ul>`
+          form += `<li>`
+          form +=
+            `${name}: <div class="radio-toolbar">
+                 <input type="radio" id="willTR" name="attendTR" value="Y" class="attendance">
+                 <label for="willTR" class="attendance">Will attend</label>
+
+                 <input type="radio" id="willnotTR" name="attendTR" value="N" class="attendance">
+                 <label for="willnotTR" class="attendance">Will not attend</label>`
+          form +=
+            `<div id="dietTR">Dietary restriction:
+              <label class="foodcontainer">None
+                <input type="radio" checked="checked" name="foodTR" value="None">
+                <span class="checkmark"></span>
+              </label>
+              <label class="foodcontainer">Vegetarian
+                <input type="radio" name="foodTR" value="Vegetarian">
+                <span class="checkmark"></span>
+              </label></div></div>`
+          form += `</li>`
+          if(plusone) {
+            form += `<br><li>`
+            form +=
+              `${plusone}: <div class="radio-toolbar">
+                  <input type="radio" id="willTR2" name="attendTR2" value="Y" class="attendance">
+                  <label for="willTR2" class="attendance">Will attend</label>
+
+                  <input type="radio" id="willnotTR2" name="attendTR2" value="N" class="attendance">
+                  <label for="willnotTR2" class="attendance">Will not attend</label>`
+
+            form +=
+            `<div id="dietTR2">Dietary restriction:
+                <label class="foodcontainer">None
+                  <input type="radio" checked="checked" name="foodTR2" value="None">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="foodcontainer">Vegetarian
+                  <input type="radio" name="foodTR2" value="Vegetarian">
+                  <span class="checkmark"></span>
+                </label></div></div>`
+            form += `</li>`
+          }
+          form += `</ul>`
+
+          form += `</ul>`
+
+          form += `Is there anything else you would like to tell us? <br>(e.g. bringing children, accessibility needs, ideological opposition to ${full.sensitive ? "the institution of marriage" : "intermarriage"}, medical conditions that force you to wear white, etc.)<br>`
+          form += `<textarea name="etc"></textarea>`
+
+
+          form += `
+            <br>
+            <br>
+            <button id="rsvp-save">Save</button>
+            `
+          p.innerHTML = form
+
+          // console.log(obj)
+          setFormElements(full)
+
+          /*
+          const f = e => {
+            let v = document.querySelector("input[name=firstNYC]:checked").value
+            alert(`New value ${v}`)
+          }
+          document.querySelectorAll("input[name='firstNYC']").forEach((input) => {
+              input.addEventListener('change', f)
+          })
+          */
+
+          p.classList.remove('hide')
+        } else if (obj.status == "none") {
+          let p = document.querySelector('.cantfind')
+          p.classList.remove('hide')
+
+        } else if (obj.status == "ambiguous") {
+          let p = document.querySelector('.doyoumean')
+          p.classList.remove('hide')
+        }
+
+      }
+
+      const handleSave = obj => {
+        // console.log(obj)
+        document.querySelector('.full-form').classList.add('hide')
+        document.querySelector('.saved').classList.remove('hide')
+      }
+
+      document.querySelector("#rsvp-name").addEventListener('submit', event => {
+        event.preventDefault()
+        if(document.querySelector('#rsvp-continue')) {
+          document.querySelector('#rsvp-continue').remove()
+          document.querySelector('#rsvp-name-lookup').readOnly = true
+          let xhr = new XMLHttpRequest()
+          xhr.open("POST", "/rsvp/backend/check", true)
+          xhr.onload = function (e) {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                handle(JSON.parse(xhr.responseText))
+              } else {
+                console.error(xhr.statusText)
+              }
+            }
+          }
+          xhr.onerror = function () {
+            console.error("Error!")
+          }
+          // var data = new FormData()
+          // data.append('name', document.querySelector('#rsvp-name-lookup').value)
+          let data = {'name': document.querySelector('#rsvp-name-lookup').value}
+          // console.log(data)
+          xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+          xhr.send(JSON.stringify(data))
+        } else {
+          document.querySelector('#rsvp-save').remove()
+          let xhr = new XMLHttpRequest()
+          xhr.open("POST", "/rsvp/backend/save", true)
+          xhr.onload = function (e) {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                handleSave(JSON.parse(xhr.responseText))
+              } else {
+                console.error(xhr.statusText)
+              }
+            }
+          }
+          xhr.onerror = function () {
+            console.error("Error!")
+          }
+          // var data = new FormData()
+          // data.append('name', document.querySelector('#rsvp-name-lookup').value)
+          let data = {'name': name, data: serializeForm()}
+          // console.log(data)
+          xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+          xhr.send(JSON.stringify(data))
+        }
+      })
+    </script>
+  </body>
+</html>

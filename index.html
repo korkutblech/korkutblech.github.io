@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+		<meta name="robots" content="noindex" />
+    <title>Settlers of Anna & Joomy</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <script type="text/javascript" src="lib/interact.min.js"></script>
+    <script type="text/javascript" src="lib/confetti.browser.min.js"></script>
+    <style>
+      @font-face {
+        font-family: Libertine;
+        src: url("fonts/LinLibertine_R.otf") format("opentype");
+      }
+
+      @font-face {
+        font-family: Libertine;
+        font-weight: bold;
+        src: url("fonts/LinLibertine_RB.otf") format("opentype");
+      }
+
+      body {
+        font-family: Libertine, serif;
+        letter-spacing: -.02rem;
+        background: #B8D1EE;
+        color: #0D417D;
+        margin: 0;
+        padding: 20px 0 0 0;
+      }
+
+      p {
+        margin: 20px;
+      }
+
+      img {
+        -khtml-user-select: none;
+        -o-user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      
+      /*
+      #main-content { background-color: #eef3f7; background-opacity: 0.3em;}
+      #sidebar-left { background-color: #e3e9ee; background-opacity: 0.3em;}
+      #sidebar-right { background-color: #dbe1e6; background-opacity: 0.3em;}
+      */
+
+      .board {
+        width: 100%;
+        max-width: 50em;
+        margin-top:1em;
+      }
+      #sidebar-left img {
+        width: 100%;
+        max-width: calc(11em + 1vw);
+      }
+      #sidebar-right img {
+        width: 100%;
+        max-width: 14em;
+      }
+      .directive {
+        font-size:calc(1em + 0.6vw);
+      }
+      .inner {
+        margin: 1em;
+        height: 48em;
+        position: relative;
+      }
+      .innerer {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%
+      }
+      .sidebar-right .inner {
+        min-height: 40em;
+      }
+
+      .cards {
+        position: relative;
+        height: 20em;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14em;
+      }
+      .cards img:nth-child(1) {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .cards img:nth-child(2) {
+        position: absolute;
+        top: 1em;
+        left: 1em;
+      }
+      .cards img:nth-child(3) {
+        position: absolute;
+        top: 2em;
+        left: 2em;
+      }
+      
+      /*Base Mobile Layout*/
+      .wrap {
+        width: 90%;
+        margin: 0 auto;
+      }
+      
+      #main-content, #sidebar-left, #sidebar-right {
+        width: 100%;
+        float: left;
+      }
+      
+      /*3 Column Layout*/
+      @media only screen and (min-width: 1024px) {
+        .wrap {
+          width: 1024px;
+          margin: 0 auto;
+        }
+        
+        #main-content {
+          width: 50%;
+          float: left;
+        }
+        
+        #sidebar-left {
+          width: 25%;
+          float: left;
+        }
+        
+        #sidebar-right {
+          width: 25%;
+          float: left;
+        }
+      }
+      
+      /*Wide Layout*/
+      @media only screen and (min-width: 1200px) {
+        .wrap {
+          width: 1200px;
+          margin: 0 auto;
+        }
+      }
+      
+      /*Move Sidebar Position*/
+      @media only screen and (min-width: 1024px) {
+        .wrap, #main-content, #sidebar-left, #sidebar-right {
+          position: relative;
+        }
+        
+        #main-content, #sidebar-left, #sidebar-right {
+          top: 0;
+        }
+        
+        #sidebar-right {
+          right: 0;
+        }
+        
+        #sidebar-left {
+          left: -50%; /*Width of #main-content*/
+        }
+        
+        #main-content {
+          left: 25%; /*Width of #left-sidebar*/
+        }
+
+        .inner { height: 48em; }
+
+      }
+      
+      /*Optional 2 Column Layout*/
+      @media only screen and (min-width: 768px) and (max-width: 1024px) {
+        #sidebar-right {
+          width: 50%;
+        }
+        #sidebar-left {
+          width: 50%;
+        }
+        #main-content {
+          position: relative;
+          top: 0;
+          left: 0;
+        }
+        .board {
+          max-width: 30em;
+        }
+        .inner {
+          height: 40em;
+        }
+      }
+
+      @media only screen and (max-width: 768px) {
+        #board {
+          max-width: 40em;
+        }
+        #main-content .inner {
+          height: calc(25em + 30vw);
+        }
+        #sidebar-left .inner {
+          height:  calc(5em + 15vw);
+          padding: 5em;
+        }
+        #sidebar-right .inner {
+          height:  calc(40em);
+        }
+        .mapouter {
+          float: none !important;
+          margin: 0 auto !important;
+        }
+      }
+
+
+      .res-card, .dev-card {
+        /* margin-top: 1em; */
+        float: left;
+        border-radius: 10px;
+        width: 100%;
+        /* aspect-ratio: 2/3; */
+        font-size: 1.2em;
+        box-shadow: 0.3px 0.3px #000000;
+      }
+
+
+      .res-card h1, .dev-card h1 {
+        font-variant: small-caps;
+        font-size: 1.3em;
+        text-align: center;
+        font-weight: 100;
+      } 
+      .res-card h2, .dev-card h2 {
+        font-variant: small-caps;
+        font-size: 1.1em;
+        text-align: center;
+        font-weight: 100;
+      } 
+
+      .res-card {
+        border: 3px solid #0D417D;
+        background: #FFF4DB;
+      }
+
+      .dev-card {
+        color: #8B572A;
+        border: 3px solid #8B572A;
+        background: #FBF3EB;
+      }
+
+			.dev-card ul {
+				list-style: square;
+			}
+
+			.dev-card a {
+				color: #D97A00;
+				border-bottom: 1px solid #32231F;
+				text-decoration: none;
+			}
+
+			.dev-card a:hover {
+				border-bottom: 2px solid #D97A00;
+			}
+
+      .highlighted {
+        filter: drop-shadow(10px 10px 10px #da532c) sepia(40%);
+      }
+
+      .info {
+        min-height: 50em; 
+      }
+
+			.seven {
+				font-family: Helvetica, sans-serif;
+				width: 20px;
+				height: 20px;
+				border-radius: 20px;
+				color: white;
+				text-align: center;
+				float: none;
+				border: 1px solid transparent;
+				background: rgb(197,65,236);
+				display:inline-block;
+			}
+
+			.mapouter {
+				border: 1px solid #8B572A;
+			}
+
+      .gallery-row {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 4px;
+        justify-content: center;
+      }
+
+      /* Create four equal columns that sits next to each other */
+      .gallery-column {
+        flex: 30%;
+        max-width: 30%;
+        padding: 0 4px;
+      }
+
+      .gallery-column div {
+        margin-top: 10px;
+        border: 1px solid #8B572A;
+        border-radius: 8px;
+      }
+      .gallery-column div small {
+        display: inline-block;
+        margin: 6px;
+      }
+      .gallery-column div img {
+        border-radius: 8px 8px 0 0;
+        vertical-align: middle;
+        width: 100%;
+      }
+
+      /* Responsive layout - makes a two column-layout instead of four columns 
+      @media screen and (max-width: 800px) {
+        .gallery-column {
+          flex: 50%;
+          max-width: 50%;
+        }
+      }
+      */
+
+      /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+      @media screen and (max-width: 600px) {
+        .gallery-column {
+          flex: 100%;
+          max-width: 100%;
+        }
+      }
+
+      a.rsvp-button {
+        margin-bottom: 1em;
+        float: left;
+        border-radius: 10px;
+        width: 100%;
+        /* aspect-ratio: 2/3; */
+        font-size: 1.2em;
+        box-shadow: 0.3px 0.3px #000000;
+
+        color: #0D417D;
+        border: 3px solid #0D417D;
+        background: #FFF4DB;
+        font-variant: small-caps;
+        font-size: 1.3em;
+        text-align: center;
+        font-weight: 100;
+        text-decoration: none;
+      }
+      a.rsvp-button span {
+        font-variant: none;
+          font-size:0.8em;
+      }
+      a.rsvp-button:hover {
+        background: #0D417D;
+        color: #FFF4DB;
+      }
+      a.covid-button {
+        background: #e46060;
+        border: 3px solid #e46060;;
+        color: #FAF8F8;
+
+      }
+      a.covid-button:hover {
+        background: #f3e6ff;
+        color: #e46060;;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div id="main-content">
+        <div class="inner">
+          <div class="innerer">
+            <div class="directive">Drag and drop the resource cards <br>onto the game board to help <br><b>Anna and Joomy</b> <br>build a road to the chuppah!</div>
+            <img src="game/board.png" class="board" id="board1">
+            <!-- <img src="game/board2.png" class="board" id="board2"> -->
+            <!-- <img src="game/board3.png" class="board" id="board3"> -->
+          </div>
+        </div>
+      </div>
+      <div id="sidebar-left">
+        <div class="inner">
+          <div class="innerer">
+            <div class="cards">
+              <img src="game/bouquet.png">
+              <img src="game/gold.png">
+              <img src="game/gold.png">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="sidebar-right">
+        <div class="inner">
+          <div class="innerer">
+            <img src="game/dev1.png">
+            <img src="game/dev2.png">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <a class="rsvp-button covid-button" href="https://forms.gle/Nx2qiBi6ih7o39rU7">Upload vaccine card here!</a>
+    </div>
+    <div class="wrap">
+      <a class="rsvp-button covid-button" href="https://forms.gle/36RsxxgS5uWx3QpU9">Upload PCR test here!</a>
+    </div>
+    <div class="wrap">
+      <a class="rsvp-button" href="/rsvp">Click here to RSVP!<br><span>(but read the details below first!)</span></a>
+    </div>
+    <div class="wrap">
+        <div class="dev-card info">
+          <h1>More wedding information!</h1>
+          <p>Hello there! As you may have gathered, we, <b>Anna Blech</b> and <b>Joomy Korkut</b>, are getting married!</p>
+          <p>The game above is a mini variant of one of our favorite board games, Settlers of Catan. We like the game so much that Anna mentioned it in her dating profile and <a href="photos/chat.png">Joomy referenced it in his first message to her in 2017</a>!</p>
+
+          <h1>Part 1: New York.<br>September 4th, 2022.</h1>
+          <h2>Travel & Lodging</h2>
+					<div class="mapouter"><div class="gmap_canvas"><iframe width="250" height="250" id="gmap_canvas" src="https://maps.google.com/maps?q=terrace%20on%20the%20park&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><style>.mapouter{position:relative;text-align:right;max-height:250px;max-width:250px;float:right; margin: 1em; margin-top:0;}</style><style>.gmap_canvas {overflow:hidden;background:none!important;max-height:250px;max-width:250px;}</style></div></div>
+          <p>The wedding in New York City is at <b>Terrace on the Park</b>, 52-11 111th St, Queens, NY 11368, right next to Flushing Meadows Corona Park. Our event will be in the <b>Terrace Suite</b>, which is on the ground level, on your right when you enter the building.
+					</p>
+          <p>The venue is accessible via subway. You can take the <span class="seven">7</span> line, get off the train at the 111th Street Station, and walk southwards on 111th St for about 15 minutes. </p><p>But, if it is an option for you, sharing a car ride or taxi with other guests will probably be the most convenient. The venue has free parking.</p>
+					<p>Since the venue is so close to the city, we do not have a recommended hotel or a lodging option with a discount. The venue is very close to LaGuardia Airport, and fairly close to JFK, so there are airport hotels nearby for those who do not have Labor Day off and need to make a quick getaway. For those whose employers respect federal holidays, there are many other options that let you explore the city.
+          </p>
+          <h2>Schedule</h2>
+          <p>The ceremony begins at 3:45pm, so please plan to arrive at 3:30pm. The ceremony will be followed by a cocktail hour and dinner, which will end at 10pm.</p>
+          <h2>Vaccination Mandate</h2>
+          <p>To protect you, our guests, and our families, we are requiring COVID vaccines, boosters, and negative PCR tests taken within 48 hours of the wedding. You can upload your vaccine card <a href="https://forms.gle/Nx2qiBi6ih7o39rU7">here</a> and your PCR test result <a href="https://forms.gle/36RsxxgS5uWx3QpU9">here</a>. If either of these rules present a problem, please contact us at <a href="mailto:korkutblech@gmail.com">korkutblech@gmail.com</a>, or contact one of us directly.
+          </p>
+					<p><br></p>
+          <h1>Part 2: Bursa, Turkey.<br>September 10th, 2022.</h1>
+          <h2>Travel & Lodging</h2>
+					<div class="mapouter"><div class="gmap_canvas"><iframe width="250" height="250" id="gmap_canvas" src="https://maps.google.com/maps?q=heybeli%20otel%20bademli&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><style>.mapouter{position:relative;text-align:right;max-height:250px;max-width:250px;float:right; margin: 1em; margin-top:0;}</style><style>.gmap_canvas {overflow:hidden;background:none!important;max-height:250px;max-width:250px;}</style></div></div>
+          <p>The wedding in Bursa is at <b>Heybeli Otel</b>, Çağrışan, Saygı Sokak 3/A, 16960 Mudanya/Bursa, Turkey.
+					</p>
+          <p>If you already live in Bursa, your best bet is to drive, but there is also public transportation if you need it. If you live in Istanbul, the easiest way to get to the hotel is to take the İDO or BUDO ferries from Istanbul to Mudanya or Güzelyalı, and then to take a taxi to the hotel.
+          </p>
+					<p>If you do not live in Turkey, or if you are a non-Turkish friend of ours who wants to come to our wedding in Turkey, please let us know. We might be able to provide accommodation for you. The alternative option is to book a room in the Heybeli Otel, where you will have a discount. We can also coordinate flights with you.
+          </p>
+					<p>We are considering planning trips to sites in Bursa and Istanbul for our visitors from abroad. Bursa is Joomy's hometown, but it is also an international tourist destination for other reasons. It was the first capital of the Ottoman Empire, and therefore has a multitude of beautiful mosques, tombs, and bazaars. Istanbul needs no explanation, but just in case: Istanbul is the cultural hub of Turkey, a city at the intersection of two continents, and the home of abundant Byzantine and Ottoman historical sites. It is also internationally recognized as the place Joomy went to high school.
+          </p>
+          <h2>Schedule</h2>
+          <p>The wedding will start at 7:30pm and end at midnight. There will not be a ceremony.</p>
+          <h2>Vaccination Mandate</h2>
+					<p>The wedding in Bursa will be entirely outdoors, weather permitting. However, we may have to move indoors if it rains. Therefore, we require vaccination to protect you, our guests, and our families.</p>
+
+					<p><br></p>
+          <h1>Wedding Registry</h1>
+
+          <p>Your presence is your gift! However, if you want to give us a second gift, here are a few options:
+						<ul>
+							<li>If you would like to get us certain kitchen tools and utensils, Judaica, or other home items, <a href="https://www.amazon.com/wedding/share/korkutblech">here is our wedding registry on Amazon</a>.</li>
+							<li>If you prefer to give us a cash gift to be used for our honeymoon or a future home, <a href="https://www.paypal.com/paypalme/korkutblech">here is a PayPal link</a>.</li>
+						</ul>
+					</p>
+          <p>Especially if you are buying airplane tickets to come to one or both of our weddings, please do not feel obligated to get us an additional gift!</p>
+
+          <h1>Photo Gallery</h1>
+          <div class="gallery-row">
+            <div class="gallery-column">
+              <!-- <img src="photos/chat.png"> -->
+              <div>
+                <img src="photos/penn.jpg">
+                <small>During a trip to Washington Crossing Historic Park. Pennsylvania. March 2021.</small>
+              </div>
+              <div>
+                <img src="photos/valentines.jpg">
+                <small>Valentine's Day at Joomy's apartment. Princeton, NJ. February 2021.</small>
+              </div>
+            </div>
+            <div class="gallery-column">
+              <div>
+                <img src="photos/engagement.jpg">
+                <small>Engagement! Istanbul, Turkey. July 2021.</small>
+              </div>
+              <div>
+                <img src="photos/bursa.jpg">
+                <small>Celebrating our engagement and introducing Anna to various Turkish desserts. Bursa, Turkey. July 2021.</small>
+              </div>
+              <div>
+                <img src="photos/jetski.jpg">
+                <small>When Anna convinced Joomy to ride a jetski, which he managed to capsize. Antalya, Turkey. July 2021.</small>
+              </div>
+            </div>
+            <div class="gallery-column">
+              <div>
+                <img src="photos/olana.jpg">
+                <small>Visiting Olana, Hudson, NY. August 2021.</small>
+              </div>
+              <div>
+                <img src="photos/hudson.jpg">
+                <small>Joomy experiences the joys of the Blech family signature Tilley hats. Greenport Conservation Area, Hudson, NY. August 2021.</small>
+              </div>
+              <div>
+                <img src="photos/bbwedding.jpg">
+                <small>At Daniel and Julia's wedding, Tarrytown, NY. June 2021.</small>
+              </div>
+            </div>
+          </div>
+					<p><br></p>
+
+        </div>
+    </div>
+    <div class="wrap">
+      <a class="rsvp-button" href="/rsvp">Click here to RSVP!<br><span>(assuming that you've read the details above!)</span></a>
+    </div>
+    <div class="wrap">
+    <script>
+      const toggleContent = () => {
+        var e = document.querySelector('.toggle-content')
+        if(e.classList.contains('is-visible')) {
+          e.classList.remove('is-visible')
+        } else {
+          e.classList.add('is-visible')
+        }
+      }
+
+      var point = new Audio('sound/point.mp3')
+      var after = new Audio('sound/after.mp3')
+
+      const yay = () => {
+        var count = 200
+        var defaults = { origin: { y: 0.7 } }
+
+        const fire = (particleRatio, opts) => {
+          confetti(Object.assign({}, defaults, opts, {
+            particleCount: Math.floor(count * particleRatio)
+          }))
+        }
+
+        fire(0.25, { spread: 26, startVelocity: 55, })
+        fire(0.2, { spread: 60 })
+        fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 })
+        fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 })
+        fire(0.1, { spread: 120, startVelocity: 45 })
+      }
+
+
+      const fadeout = (audio) => {
+        var aux = setInterval(() => {
+            try {
+              audio.volume -= 0.02
+            } catch (e) {
+              clearInterval(aux)
+            }
+          }, 200)
+      }
+
+      /* The dragging code for '.draggable' from the demo above
+      * applies to this demo as well so it doesn't have to be repeated. */
+
+      // enable draggables to be dropped into this
+      interact('.board').dropzone({
+        // only accept elements matching this CSS selector
+        accept: '.cards img',
+        // Require a 75% element overlap for a drop to be possible
+        overlap: 0.75,
+
+        // listen for drop related events:
+
+        ondropactivate: function (event) {
+          // add active dropzone feedback
+          // event.target.classList.add('highlighted')
+        },
+        ondragenter: function (event) {
+          event.target.classList.add('highlighted')
+          event.relatedTarget.classList.add('highlighted')
+        },
+        ondragleave: function (event) {
+          // remove the drop feedback style
+          event.target.classList.remove('highlighted')
+          event.relatedTarget.classList.remove('highlighted')
+        },
+        ondrop: function (event) {
+          event.relatedTarget.remove()
+          const remaining =  document.querySelectorAll('.cards img').length
+          if(remaining === 0) {
+            after.volume = 1
+            after.currentTime = 0
+            after.play()
+            fadeout(after)
+            setTimeout(() => { yay() }, 1000)
+            setTimeout(() => { document.querySelector('.info').scrollIntoView({behavior: 'smooth'}) }, 4000)
+          } else {
+            point.currentTime = 0
+            point.play()
+            if(remaining === 2) {
+              document.querySelector(".board").src = "game/board2.png"
+            } else if(remaining === 1) {
+              document.querySelector(".board").src = "game/board3.png"
+            }
+          }
+        },
+        ondropdeactivate: function (event) {
+          // remove active dropzone feedback
+          event.target.classList.remove('highlighted')
+          if(event.relatedTarget) {
+            event.relatedTarget.removeAttribute('style')
+            event.relatedTarget.removeAttribute('data-x')
+            event.relatedTarget.removeAttribute('data-y')
+          }
+        }
+      })
+
+      interact('.cards img')
+        .draggable({
+          inertia: true,
+          modifiers: [
+          ],
+          autoScroll: true,
+          // dragMoveListener from the dragging demo above
+          listeners: { move: dragMoveListener }
+        })
+
+
+        function dragMoveListener (event) {
+          var target = event.target
+          // keep the dragged position in the data-x/data-y attributes
+          var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+          var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+
+          // translate the element
+          target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+
+          // update the posiion attributes
+          target.setAttribute('data-x', x)
+          target.setAttribute('data-y', y)
+        }
+      </script>
+  </body>
+</html>
